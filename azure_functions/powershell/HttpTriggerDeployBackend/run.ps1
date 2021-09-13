@@ -19,7 +19,7 @@ if ($name) {
     New-AzContainerGroup -ResourceGroupName $env:ACI_RESOURCE_GROUP_NAME -Name $env:ACI_CONTAINER_GROUP_NAME `
         -Image mcr.microsoft.com/azure-cli -OsType Linux `
         -IpAddressType Public `
-        -Command "/bin/bash -c ""cd && az login --service-principal --username $env:AZURE_SP_APP_ID --password $env:AZURE_SP_PASSWORD --tenant $env:AZURE_SP_TENANT && git clone https://github.com/OVaaS/ovaas-server-prod.git && cd ovaas-server-prod && source ./deploy_vm.sh deploy_config_singlevm.json $name '$env:AZURE_STORAGE_CONNECTION_STRING' $env:COSMOSDB_HOST '$env:MASTER_KEY' $env:DATABASE_ID $env:CONTAINER_ID && cd""" `
+        -Command "/bin/bash -c ""cd && az login --service-principal --username $env:AZURE_SP_APP_ID --password $env:AZURE_SP_PASSWORD --tenant $env:AZURE_SP_TENANT && git clone https://github.com/OVaaS/ovaas-server-prod.git && cd ovaas-server-prod && pip install azure-cosmos==4.2.0 -U && source ./deploy_vm.sh deploy_config_singlevm.json $name '$env:AZURE_STORAGE_CONNECTION_STRING' $env:COSMOSDB_HOST '$env:MASTER_KEY' $env:DATABASE_ID $env:CONTAINER_ID && cd""" `
         -RestartPolicy OnFailure
     if ($?) {
         $body = "This HTTP triggered function executed successfully. Started container group $env:ACI_CONTAINER_GROUP_NAME"
